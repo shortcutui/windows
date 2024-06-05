@@ -1,0 +1,297 @@
+{
+  "$schema": "https://raw.githubusercontent.com/LGUG2Z/komorebi/master/schema.json",
+  "app_specific_configuration_path_TODO": "需要替换成项目中的applications.yaml的实际路径",
+  "window_hiding_behaviour": "Minimize",
+  "hidebhaviourcomment": "Hide会对某些应用有问题，Minimize会有连续切换的时候出bug",
+  "cross_monitor_move_behaviour": "Insert",
+  "alt_focus_hack": false,
+  "default_workspace_padding": 0,
+  "default_container_padding": 3,
+  "border": true,
+  "border_width": 5,
+  "border-offset": -3,
+  "border_colours": {
+    "single": {
+      "r": 255,
+      "g": 165,
+      "b": 245
+    },
+    "stack": {
+      "r": 256,
+      "g": 165,
+      "b": 66
+    },
+    "monocle": {
+      "r": 255,
+      "g": 51,
+      "b": 153
+    }
+  },
+  "mouse_follows_focus": false,
+  "float_rules": [
+    {
+      "kind": "Exe",
+      "id": "Zebar.exe",
+      "matching_strategy": "Equals"
+    },
+    {
+      "kind": "Exe",
+      "id": "eudic.exe",
+      "matching_strategy": "Equals"
+    },
+    {
+      "kind": "Exe",
+      "id": "Everything.exe",
+      "matching_strategy": "Equals"
+    },
+    {
+      "kind": "Exe",
+      "id": "Simplenote.exe",
+      "matching_strategy": "Equals"
+    },
+    {
+      "kind": "Exe",
+      "id": "notepad.exe",
+      "matching_strategy": "Equals"
+    },
+    {
+      "kind": "Exe",
+      "id": "Thunder.exe",
+      "matching_strategy": "Equals"
+    },
+    {
+      "kind": "Exe",
+      "id": "powershell.exe",
+      "matching_strategy": "Equals"
+    },
+    {
+      "kind": "Exe",
+      "id": "uTools.exe",
+      "matching_strategy": "Equals"
+    }
+  ],
+  "layered_applications": [
+    {
+      "kind": "Exe",
+      "id": "QQ.exe",
+      "matching_strategy": "Equals"
+    },
+    {
+      "kind": "Exe",
+      "id": "WeChat.exe",
+      "matching_strategy": "Equals"
+    },
+    {
+      "kind": "Exe",
+      "id": "wps.exe",
+      "matching_strategy": "Equals"
+    }
+  ],
+  "manage_rules": [
+    {
+      "kind": "Exe",
+      "id": "QQ.exe",
+      "matching_strategy": "Equals"
+    },
+    {
+      "kind": "Exe",
+      "id": "WeChat.exe",
+      "matching_strategy": "Equals"
+    },
+    {
+      "kind": "Exe",
+      "id": "wps.exe",
+      "matching_strategy": "Equals"
+    }
+  ],
+  "monitors": [
+    {
+      "workspaces": [
+        {
+          "name": "terminal",
+          "layout": "Rows"
+        },
+        {
+          "name": "im",
+          "initial_workspace_rules": [
+            {
+              "id": "QQ.exe",
+              "kind": "Exe",
+              "matching_strategy": "Equals"
+            },
+            {
+              "id": "WeChat.exe",
+              "kind": "Exe",
+              "matching_strategy": "Equals"
+            }
+          ],
+          "workspace_rules": [
+            {
+              "id": "QQ.exe",
+              "kind": "Exe",
+              "matching_strategy": "Equals"
+            },
+            {
+              "id": "WeChat.exe",
+              "kind": "Exe",
+              "matching_strategy": "Equals"
+            }
+          ],
+          "layout": "Rows"
+        },
+        {
+          "name": "misc",
+          "layout": "Rows",
+          "initial_workspace_rules": [
+            {
+              "id": "Clash Verge",
+              "kind": "Exe",
+              "matching_strategy": "Equals"
+            }
+          ],
+          "workspace_rules": [
+            {
+              "id": "Clash Verge",
+              "kind": "Exe",
+              "matching_strategy": "Equals"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "workspaces": [
+        {
+          "name": "editor",
+          "layout": "BSP",
+          "initial_workspace_rules": [
+            {
+              "id": "wezterm-gui.exe",
+              "kind": "Exe",
+              "matching_strategy": "Equals"
+            },
+            {
+              "id": "neovide.exe",
+              "kind": "Exe",
+              "matching_strategy": "Equals"
+            }
+          ],
+          "workspace_rules": [
+            {
+              "id": "wezterm-gui.exe",
+              "kind": "Exe",
+              "matching_strategy": "Equals"
+            },
+            {
+              "id": "neovide.exe",
+              "kind": "Exe",
+              "matching_strategy": "Equals"
+            }
+          ]
+        },
+        {
+          "name": "browser",
+          "layout": "BSP",
+          "initial_workspace_rules": [
+            {
+              "id": "chrome.exe",
+              "kind": "Exe",
+              "matching_strategy": "Equals"
+            },
+            {
+              "id": "brave.exe",
+              "kind": "Exe",
+              "matching_strategy": "Equals"
+            },
+            {
+              "id": "msedge.exe",
+              "kind": "Exe",
+              "matching_strategy": "Equals"
+            }
+          ],
+          "workspace_rules": [
+            {
+              "id": "chrome.exe",
+              "kind": "Exe",
+              "matching_strategy": "Equals"
+            },
+            {
+              "id": "brave.exe",
+              "kind": "Exe",
+              "matching_strategy": "Equals"
+            },
+            {
+              "id": "msedge.exe",
+              "kind": "Exe",
+              "matching_strategy": "Equals"
+            }
+          ]
+        },
+        {
+          "name": "doc",
+          "layout": "BSP",
+          "initial_workspace_rules": [
+            {
+              "id": "wps.exe",
+              "kind": "Exe",
+              "matching_strategy": "Equals"
+            }
+          ],
+          "workspace_rules": [
+            {
+              "id": "wps.exe",
+              "kind": "Exe",
+              "matching_strategy": "Equals"
+            }
+          ]
+        },
+        {
+          "name": "game",
+          "layout": "BSP"
+        },
+        {
+          "name": "rss",
+          "layout": "BSP"
+        },
+        {
+          "name": "video",
+          "layout": "BSP",
+          "initial_workspace_rules": [
+            {
+              "id": "Explorer.EXE",
+              "kind": "Exe",
+              "matching_strategy": "Equals"
+            }
+          ],
+          "workspace_rules": [
+            {
+              "id": "Explorer.EXE",
+              "kind": "Exe",
+              "matching_strategy": "Equals"
+            }
+          ]
+        },
+        {
+          "name": "log",
+          "layout": "BSP"
+        },
+        {
+          "name": "app",
+          "layout": "Columns",
+          "workspace_rules": [
+            {
+              "id": "xDroidUI",
+              "kind": "Exe",
+              "matching_strategy": "Equals"
+            },
+            {
+              "id": "xAppCenter",
+              "kind": "Exe",
+              "matching_strategy": "Equals"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

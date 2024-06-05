@@ -1,0 +1,535 @@
+;; used C-f4 C-f5 C-f6 C-f12 C-f13 C-f14 C-f15
+(defcfg
+  danger-enable-cmd yes
+  delegate-to-first-layer yes
+  process-unmapped-keys yes
+  movemouse-inherit-accel-state yes
+  movemouse-smooth-diagonals yes
+  sequence-input-mode visible-backspaced
+)
+
+(defvirtualkeys
+  vklayerdefault (layer-switch default)
+  vklayerdefault2 (layer-switch editor)
+  vkeasyclick (cmd win-vind.exe -c r#""<easyclick><click-left>"")
+)
+
+(defalias
+  vkdf (on-press tap-vkey vklayerdefault)
+  vkdf2 (on-press tap-vkey vklayerdefault2)
+  easyclick (on-press tap-vkey vkeasyclick)
+)
+
+(defvar
+  tap-timeout   200
+  hold-timeout  200
+  oneshot-timeout 2000
+  tt $tap-timeout
+  ht $hold-timeout
+  ot $oneshot-timeout
+  winscriptpath E:\Users\soluty\vm\config\kanata\win.ahk
+  imescriptpath E:\Users\soluty\vm\config\kanata\ime.ahk
+  mousescriptpath E:\Users\soluty\vm\config\kanata\mouse.ahk
+  ;; espansoscriptpath E:\Users\soluty\vm\config\kanata\espanso.ahk
+)
+
+(defchords brackets 30
+  (j      ) n
+  (   k   ) i
+  (      l) o
+  (j  k   ) [
+  (   k  l) ]
+  (j  k  l) (macro [ ] left)
+  (u      ) u
+  (   i   ) r
+  (      o) l
+  (u  i   ) S-9
+  (   i  o) S-0
+  (u  i  o) (macro S-9 S-0 left)
+)
+
+(defalias
+  chn (chord brackets j)
+  chi (chord brackets k)
+  cho (chord brackets l)
+  chu (chord brackets u)
+  chr (chord brackets i)
+  chl (chord brackets o)
+)
+
+(defalias
+  按住空格到spacefn (tap-hold $tt $ht spc (layer-toggle layspacefn))
+  按住Ctrl (tap-hold 50 50 lctl (layer-toggle layctrl))
+  按住Ctrl2 (tap-hold 50 50 lctl (layer-toggle layctrl2))
+  按住Tab (tap-hold $tt $ht tab (layer-toggle laynumber))
+)
+
+(defsrc
+   esc  1    2    3    4    5    6    7    8    9    0    -    =    bspc
+   tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
+   caps a    s    d    f    g    h    j    k    l    ;    '    ret
+   lsft z    x    c    v    b    n    m    ,    .    /    rsft
+   lctl lmet lalt           spc            ralt rmet rctl
+)
+
+(deflayer default
+   grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
+   @按住Tab  q    w    d    f    k    j    @chu    @chr    @chl    ;    [    ]    \
+   (tap-hold $tt 5000 esc lalt)  a    s    e    t    g    y    @chn    @chi    @cho    h    S-'    ret
+   lsft z    x    c    v    b    p    m    ,    .    /    rsft
+   @按住Ctrl lmet lalt         @按住空格到spacefn      _    XX  (multi lctl lalt (tap-hold $tt $ht rctl (layer-toggle layrctrl)))
+)
+
+(deflayer fallthrough
+   grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
+   @按住Tab  q    w    d    (switch
+      ((and lctl lsft)) (layer-switch default) break
+      ((and lctl)) C-f break
+      () f break)    k    j    @chu    @chr    @chl    ;    [    ]    \
+   (tap-hold $tt 5000 esc lalt)  a    s    e    t    g    y    @chn    @chi    @cho    h    S-'    ret
+   lsft z    x    c    v    b    p    m    ,    .    /    rsft
+   lctl lmet lalt         @按住空格到spacefn      _    _  (multi lctl lalt _)
+)
+
+(deflayer fallthrough2
+   grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
+   @按住Tab  q    w    d    (switch
+      ((and lctl lsft)) (layer-switch editor) break
+      ((and lctl)) C-f break
+      () f break)    k    j    @chu    @chr    @chl    ;    [    ]    \
+   (tap-hold $tt 5000 esc lalt)  a    s    e    t    g    y    @chn    @chi    @cho    h    S-'    ret
+   lsft z    x    c    v    b    p    m    ,    .    /    rsft
+   lctl lmet lalt         @按住空格到spacefn      _    _  (multi lctl lalt _)
+)
+
+(deflayermap (editor)
+  lctl  @按住Ctrl2
+  rctl (multi lctl lalt _)
+  ___ _
+)
+
+(deflayermap (layspacefn)
+  j left
+  l rght
+  i up
+  k down
+  s home
+  f end
+  e pgup
+  d pgdn
+  h ret
+  o bspc
+  n (unicode :)
+  m (unicode %)
+  esc (unicode ~)
+  w (unicode ~)
+  ' '
+  a (unicode +)
+  u (unicode _)
+  g (unicode =)
+  b spc
+  , (unicode \)
+  . del
+  c (unicode {)
+  v (unicode })
+  r (unicode |)
+  / (unicode ?)
+
+  1 (unicode !)
+  2 (unicode @)
+  3 (unicode #)
+  4 (unicode $)
+  5 (unicode %)
+  6 (unicode ^)
+  7 (unicode &)
+  8 (unicode *)
+  9 S-9
+  0 S-0
+  - f11
+  = f12
+)
+
+(deflayermap (layrctrl)
+  ;; s (layer-switch layrctrls)
+  ___  _
+)
+
+;; 这个要转移到ahk中实现，不然麻烦
+;; (deflayermap (layrctrls)
+;;   u  (multi lctl (mwheel-up 20 20))
+;;   e  (multi lctl (mwheel-down 20 20))
+;;   ___  (multi _ @vkdf)
+;; )
+
+(deflayermap (layctrl)
+  esc caps
+  r (switch
+      ((and lsft)) (layer-switch default) break
+      () (layer-switch fallthrough) break)
+  j (cmd komorebic.exe focus left)
+  l (cmd komorebic.exe focus right)
+  i (cmd komorebic.exe focus up)
+  k (cmd komorebic.exe focus down)
+  .  (one-shot $ot (layer-toggle layctrldot))
+  w  (one-shot $ot (layer-toggle laywindow))
+  m  (switch
+      ((and lsft)) C-m break
+      () (one-shot $ot (layer-toggle laymove)) break)
+  f  (one-shot $ot (layer-toggle laytab))
+  e  (one-shot $ot (layer-toggle layarrive))
+  q  (one-shot $ot (layer-toggle layquit))
+  o  (one-shot $ot (layer-toggle laylaunch))
+  b  (one-shot $ot (layer-toggle laybackup))
+  s  (layer-switch laysize)
+  d  (layer-switch editline)
+  n  (switch
+      ((and lsft)) C-S-p break
+      () (multi (macro C-. o) (layer-switch laymouse) (cmd AutoHotkey $mousescriptpath addsize) ) break)
+  h  (switch
+      ((and lsft)) C-S-y break
+      () C-y break)
+  ;; u  C-S-u
+  ; (multi (cmd AutoHotkey $winscriptpath notepad) @vkdf)
+  u caps
+  left  (cmd komorebic cycle-workspace previous)
+  rght  (cmd komorebic cycle-workspace next)
+  spc (tap-hold $tt $ht spc (layer-toggle layctrlspace))
+  /  (macro  C-f13 @vkdf)
+  ___  (multi lctl _)
+)
+
+(deflayermap (layctrlspace)
+  j (cmd komorebic cycle-workspace previous)
+  l (cmd komorebic cycle-workspace next)
+  h C-ret
+  ___ (multi lctl _)
+)
+
+(deflayermap (layctrl2)
+  ; (multi (cmd AutoHotkey $winscriptpath notepad) @vkdf)
+  esc caps
+  r (switch
+      ((and lsft)) (layer-switch editor) break
+      () (layer-switch fallthrough2) break)
+  h  (switch
+      ((and lsft)) C-S-y break
+      () C-y break)
+  j (cmd komorebic.exe focus left)
+  l (cmd komorebic.exe focus right)
+  i (cmd komorebic.exe focus up)
+  k (cmd komorebic.exe focus down)
+  .  (one-shot $ot (layer-toggle layctrldot))
+  w  (one-shot $ot (layer-toggle laywindow))
+  m  (switch
+      ((and lsft)) C-m break
+      () (one-shot $ot (layer-toggle laymove)) break)
+  f  (one-shot $ot (layer-toggle laytab))
+  e  (one-shot $ot (layer-toggle layarrive))
+  q  (one-shot $ot (layer-toggle layquit))
+  o  (one-shot $ot (layer-toggle laylaunch))
+  b  (one-shot $ot (layer-toggle laybackup))
+  s  (layer-switch laysize2)
+  d  (layer-switch editline2)
+  n  (switch
+      ((and lsft)) C-S-p break
+      () (multi (layer-switch laymouse) (cmd AutoHotkey $mousescriptpath addsize) (macro C-. o)) break)
+
+  ;; u  C-S-u
+  u caps
+  left  (cmd komorebic cycle-workspace previous)
+  rght  (cmd komorebic cycle-workspace next)
+  spc (tap-hold $tt $ht spc (layer-toggle layctrlspace))
+  /  (macro  C-f13 @vkdf)
+  ___  (multi lctl _)
+)
+
+(deflayermap (layctrldot)
+  .  (multi (cmd AutoHotkey $imescriptpath) lrld)
+  f  C-A-a ;; 沉浸式翻译的快捷键，dot-t
+  m  (cmd AutoHotkey $mousescriptpath showpos)
+  c  (cmd AutoHotkey $mousescriptpath center)
+  l  (macro C-. o) ;; 显示鼠标
+  q  (macro C-. q) ;; 隐藏鼠标
+  x  (macro C-. x) ;; 删除win-vind, 有时候win-vind会有bug, 需要把它干掉
+  u  (one-shot 5000 (layer-toggle laypinyin))
+  e  (macro C-. d) ;; 复制zoxide中的文件夹
+
+  n  (macro C-. p) ;;
+  ___ _
+)
+
+(deflayermap (layfn)
+  1 f1
+  2 f2
+  3 f3
+  4 f4
+  5 f5
+  6 f6
+  7 f7
+  8 f8
+  9 f9
+  0 f10
+  - f11
+  = f12
+  ___ XX
+)
+
+(deflayermap (laywindow)
+  f C-S-esc
+  d (macro (cmd AutoHotkey $winscriptpath Everything) @vkdf)
+  v (multi (cmd AutoHotkey $winscriptpath WeChat) @vkdf)
+  q (multi (cmd AutoHotkey $winscriptpath QQ) @vkdf)
+  w (macro (cmd AutoHotkey $winscriptpath wezterm-gui) 100 lsft C-A-t v @vkdf2) ;; vim
+  h (macro (cmd AutoHotkey $winscriptpath wezterm-gui) 100 lsft  C-A-t y @vkdf2) ;; yazi
+  s (macro (cmd AutoHotkey $winscriptpath wezterm-gui) 100 lsft C-A-t s @vkdf2) ;; shell
+  b (multi (cmd AutoHotkey $winscriptpath chrome) @vkdf) ;; browser
+  c (multi (cmd AutoHotkey $winscriptpath Code) @vkdf) ;; code
+  n (multi (cmd AutoHotkey $winscriptpath SumatraPDF) @vkdf) ;; pdf
+  l (multi (cmd AutoHotkey $winscriptpath obs64) @vkdf)  ;; obs videio
+  g (multi (cmd AutoHotkey $winscriptpath ScreenToGif) @vkdf) ;; gif
+  a (multi (cmd AutoHotkey $winscriptpath anki) @vkdf)  ;; anki
+  z (multi (cmd AutoHotkey $winscriptpath SystemPropertiesAdvanced) @vkdf) ;; system
+  k (multi (cmd AutoHotkey $winscriptpath idea64) @vkdf) ;; idea
+  e (multi (cmd AutoHotkey $winscriptpath dialog) @vkdf) ;; dialog
+  x (multi (cmd AutoHotkey $winscriptpath Thunder) @vkdf) ;; x thunder
+  m (multi (cmd AutoHotkey $winscriptpath Telegram) @vkdf) ;; telegram
+  u  C-S-z
+  . (macro C-f6 .)
+  ___  XX
+)
+
+(deflayermap (laymove)
+  j  (cmd komorebic.exe move left)
+  l  (cmd komorebic.exe move right)
+  i  (cmd komorebic.exe move up)
+  k  (cmd komorebic.exe move down)
+  r  (cmd komorebic.exe toggle-float)
+  ___  _
+)
+
+(deflayermap (laysize)
+  j  (cmd komorebic.exe resize-axis horizontal decrease)
+  l  (cmd komorebic.exe resize-axis horizontal increase)
+  i  (cmd komorebic.exe resize-axis vertical decrease)
+  k  (cmd komorebic.exe resize-axis vertical increase)
+  m  (multi (cmd komorebic.exe toggle-monocle) @vkdf)
+  z  (macro C-s z @vkdf)
+  u  (macro C-s u)
+  e  (macro C-s d)
+  s  (macro C-s s)
+  ;  (multi (cmd komorebic.exe minimize) @vkdf)
+  c  (multi (cmd komorebic.exe cycle-layout next) @vkdf)
+  caps (multi @vkdf esc)
+  ___  (multi @vkdf _)
+)
+
+(deflayermap (laysize2)
+  j  (cmd komorebic.exe resize left increase)
+  l  (cmd komorebic.exe resize right increase)
+  i  (cmd komorebic.exe resize up increase)
+  k  (cmd komorebic.exe resize down increase)
+  m  (multi (cmd komorebic.exe toggle-monocle) @vkdf2)
+  z  (macro C-s z @vkdf)
+  u  (macro C-s u)
+  e  (macro C-s d)
+  ;  (multi (cmd komorebic.exe minimize) @vkdf)
+  c  (multi (cmd komorebic.exe cycle-layout next) @vkdf2)
+  s  (macro C-s s)
+  caps (multi @vkdf2 esc)
+  ___  (multi @vkdf2 _)
+)
+
+(deflayermap (layquit)
+  ;; q  (cmd komorebic.exe close)
+  q  A-f4
+  f  A-f4
+  ___  _
+)
+
+(deflayermap (laybackup)
+  q  (macro C-f4) ;; used in chrome
+  i  (macro C-f5) ;; used in chrome
+  j  (macro C-pgup) ;; used in chrome
+  l  (macro C-pgdn) ;; used in chrome
+  n  (macro C-S-p) ;; used in vscode
+  .  (macro C-S-p) ;; used in vscode
+  ___  _
+)
+
+(deflayermap (laylaunch)
+  o  (macro A-spc @vkdf)
+  .  (macro A-spc @vkdf)
+  f  (macro C-f12 @vkdf) ;; 欧陆词典翻译功能快捷键
+  r  (one-shot 2000 (layer-toggle layfn))
+  u  C-f14 ;; vind查找并悬浮鼠标
+  c (cmd AutoHotkey $winscriptpath cmd)
+  d (cmd AutoHotkey $winscriptpath explorer)
+  j (multi (cmd AutoHotkey $winscriptpath todo) @vkdf)
+  ___  _
+)
+
+(deflayermap (laytab)
+  b  (cmd komorebic.exe focus-named-workspace browser)
+  f  (cmd komorebic.exe focus-named-workspace terminal)
+  k  (cmd komorebic.exe focus-named-workspace im)
+  m  (cmd komorebic.exe focus-named-workspace misc)
+  e  (cmd komorebic.exe focus-named-workspace doc)
+  g  (cmd komorebic.exe focus-named-workspace game)
+  i  (cmd komorebic.exe focus-named-workspace rss )
+  v  (cmd komorebic.exe focus-named-workspace video )
+  a  (cmd komorebic.exe focus-named-workspace app )
+  l  (cmd komorebic.exe focus-named-workspace log )
+  d  (cmd komorebic.exe focus-named-workspace editor )
+  ___  _
+)
+
+(deflayermap (layarrive)
+  b  (cmd komorebic.exe move-to-named-workspace browser)
+  f  (cmd komorebic.exe move-to-named-workspace terminal)
+  k  (cmd komorebic.exe move-to-named-workspace im)
+  m  (cmd komorebic.exe move-to-named-workspace misc)
+  e  (cmd komorebic.exe move-to-named-workspace doc)
+  g  (cmd komorebic.exe move-to-named-workspace game)
+  i  (cmd komorebic.exe move-to-named-workspace rss )
+  v  (cmd komorebic.exe move-to-named-workspace video )
+  a  (cmd komorebic.exe move-to-named-workspace app )
+  l  (cmd komorebic.exe move-to-named-workspace log )
+  d  (cmd komorebic.exe move-to-named-workspace editor )
+  ___  _
+)
+
+(deflayermap (editline)
+  caps (multi @vkdf esc)
+  lsft (tap-hold $tt $ht lsft (layer-toggle editlineshift))
+  e  (macro end S-home bspc @vkdf)
+  s  (macro S-home bspc @vkdf)
+  f  (macro S-end bspc @vkdf)
+  j  (macro C-S-left bspc)
+  l  (macro C-S-rght bspc)
+  h  (macro end S-home C-c end)
+  n  (macro C-v)
+  u  (macro C-z)
+  q  (macro C-left S-' C-rght S-' @vkdf)
+  ,  (layer-switch editline2)
+  ___  (multi _ @vkdf)
+)
+
+(deflayermap (editlineshift)
+  j  (macro C-left)
+  l  (macro C-rght)
+  u  (macro C-y)
+  q  (macro home S-' end S-' @vkdf)
+  ___  (multi _ @vkdf)
+)
+
+(deflayermap (editline2)
+  caps (multi @vkdf2 esc)
+  lsft (tap-hold $tt $ht lsft (layer-toggle editlineshift2))
+  e  (macro end C-u @vkdf2)
+  d  (macro C-e e)
+  r  (macro C-e f)
+  b  (macro C-e b)
+  ;; e  (macro C-e d @vkdf2)
+  s  (macro C-u @vkdf2)
+  f  (macro C-k @vkdf2)
+  j  (macro C-w)
+  l  (macro A-rght C-w)
+  h  (macro C-e y end @vkdf2)
+  n  (macro C-S-v @vkdf2)
+  u  (macro C-e u)
+  q  (macro A-left S-' A-rght S-' @vkdf2)
+  ,  (layer-switch editline)
+  i  (macro C-e r)
+  ___  (multi _ @vkdf2)
+)
+
+(deflayermap (editlineshift2)
+  j  A-left
+  l  A-rght
+  r  (macro C-e S-f)
+  u  (macro C-y)
+  q  (macro home S-' end S-' @vkdf)
+  ___  (multi _ @vkdf2)
+)
+
+(deflayermap (laymouse)
+  caps (multi (layer-switch default) (cmd AutoHotkey $mousescriptpath subsize) (macro C-. q))
+  q (multi (layer-switch default) (cmd AutoHotkey $mousescriptpath subsize) (macro C-. q))
+  lctl (multi lctl (tap-hold $tt $ht lctl (layer-toggle layctrlmouse)))
+  i (movemouse-accel-up 1 3000 1 50)
+  j (movemouse-accel-left 1 3000 1 50)
+  k (movemouse-accel-down 1 3000 1 50)
+  l (movemouse-accel-right 1 3000 1 50)
+  s mlft
+  f (multi mrtp @vkdf)
+  x mmid
+  w mfwd
+  r mbck
+  u  (cmd AutoHotkey $mousescriptpath addsize)
+  z  (cmd AutoHotkey $mousescriptpath subsize)
+  c (mwheel-left 20 120)
+  v (mwheel-right 20 120)
+  e (mwheel-up 20 120)
+  d (mwheel-down 20 120)
+  h (multi (macro C-. q) @vkdf)
+  o (multi (macro C-. o) @vkdf)
+  n (multi (macro C-p p C-. o) @vkdf (cmd AutoHotkey $mousescriptpath subsize))
+  spc (setmouse 42228 32228)
+  ___ XX
+ )
+
+(deflayermap (layctrlmouse)
+  caps (multi (layer-switch default) (cmd AutoHotkey $mousescriptpath subsize) (macro C-. q))
+  q (multi (layer-switch default) (cmd AutoHotkey $mousescriptpath subsize) (macro C-. q))
+  i (movemouse-up 2 1)
+  j (movemouse-left 2 1)
+  k (movemouse-down 2 1)
+  l (movemouse-right 2 1)
+  n (multi (macro C-p p C-. o) @vkdf (cmd AutoHotkey $mousescriptpath subsize))
+  ___ XX
+)
+
+(deflayermap (laynumber)
+  j  1
+  k  2
+  l  3
+  u  4
+  i  5
+  o  6
+  n  0
+  m  S-=
+  ,  -
+  . S-8
+  ___  _
+)
+
+(deflayermap (laypinyin)
+ caps @vkdf
+ q (unicode ā)
+ w (unicode á)
+ e (unicode ǎ)
+ r (unicode à)
+ u (unicode ō)
+ i (unicode ó)
+ o (unicode ǒ)
+ p (unicode ò)
+ a (unicode ē)
+ s (unicode é)
+ d (unicode ě)
+ f (unicode è)
+ j (unicode ī)
+ k (unicode í)
+ l (unicode ǐ)
+ ; (unicode ì)
+ z (unicode ū)
+ x (unicode ú)
+ c (unicode ǔ)
+ v (unicode ù)
+ n (unicode ǖ)
+ m (unicode ǘ)
+ , (unicode ǚ)
+ . (unicode ǜ)
+ / (unicode ü)
+ ___ XX
+)
+
